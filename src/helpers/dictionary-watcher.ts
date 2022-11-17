@@ -3,6 +3,22 @@ import { useSyncExternalStore } from 'use-sync-external-store/shim';
 import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/with-selector';
 import { ReactUnity } from '../models/generated';
 
+function shallowEquals (a, b) {
+  if (a === b) return true;
+  if (!(a instanceof Object) || !(b instanceof Object)) return false;
+
+  var keys = Object.keys(a);
+  var length = keys.length;
+
+  for (var i = 0; i < length; i++)
+    if (!(keys[i] in b)) return false;
+
+  for (var i = 0; i < length; i++)
+    if (a[keys[i]] !== b[keys[i]]) return false;
+
+  return length === Object.keys(b).length;
+};
+
 export interface DictionaryWatcher<T = Record<string, any>> {
   /** React Context that provides the value */
   context: React.Context<T>;
@@ -85,7 +101,7 @@ export function createDictionaryWatcher<ValueType = any, RecordType = Record<str
   };
 
   function useSelector<Res>(selector: (store: RecordType) => Res) {
-    return useSyncExternalStoreWithSelector(subscribe, getSnapshot, getSnapshot, selector);
+    return useSyncExternalStoreWithSelector(subscribe, getSnapshot, getSnapshot, selector, shallowEquals);
   }
 
   function useDictionaryContext() {
@@ -102,4 +118,5 @@ export function createDictionaryWatcher<ValueType = any, RecordType = Record<str
 
 export const globalsWatcher = createDictionaryWatcher<any, DefaultGlobals>(Globals, 'globalsContext');
 export const useGlobals = globalsWatcher.useContext;
+export const useSelector = globalsWatcher.useSelector;
 export const GlobalsProvider = globalsWatcher.Provider;
