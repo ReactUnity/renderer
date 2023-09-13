@@ -10,11 +10,11 @@
     ".": "./dist/index.js",
     "./test": "./dist/test.js",
     "./ugui": "./dist/ugui/index.js",
-    "./ugui/*": "./dist/ugui/*",
+    "./ugui/*": "./dist/ugui/*.js",
     "./uitoolkit": "./dist/uitoolkit/index.js",
-    "./uitoolkit/*": "./dist/uitoolkit/*",
+    "./uitoolkit/*": "./dist/uitoolkit/*.js",
     "./editor": "./dist/editor/index.js",
-    "./editor/*": "./dist/editor/*",
+    "./editor/*": "./dist/editor/*.js",
     "./webgl-compat": "./dist/webgl-compat.js"
   },
   "scripts": {
